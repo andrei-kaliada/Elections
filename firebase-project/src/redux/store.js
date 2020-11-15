@@ -7,18 +7,18 @@ import fbConfig from '../config/fbConfig';
 
 
 
-let redusers = combineReducers({
+let rootReducers = combineReducers({
     auth:authReducer,
 })
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(redusers, 
-    compose(
-    applyMiddleware(thunk.withExtraArgument({getFirebase,getFirestore})),
-    reduxFirestore(fbConfig),
-    reactReduxFirebase(fbConfig)
-    )
-);
+// const store = createStore(redusers, 
+//     compose(
+//     applyMiddleware(thunk.withExtraArgument({getFirebase,getFirestore})),
+//     reduxFirestore(fbConfig),
+//     reactReduxFirebase(fbConfig)
+//     )
+// );
 
-export default store;
+export default rootReducers;

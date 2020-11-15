@@ -15,6 +15,7 @@ import MainPage from "./Components/MainPage/MainPage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from './Components/Header/Header';
 import { Button } from '@material-ui/core';
+import {connect} from 'react-redux';
 
 import {AddUser} from './redux/actions/addUser';
 
@@ -77,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function App() {
+ function App(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -119,7 +120,7 @@ export default function App() {
       >
         <div className={classes.drawerHeader} />
         <Route exact path="/" render={()=><div>Main page
-          <Button onClick={()=>AddUser()}></Button>
+          <Button onClick={()=>props.AddUser()}>Add User</Button>
            </div>}/>
         <Route exact path="/form" render={()=><FormTest />}/>
         
@@ -127,4 +128,6 @@ export default function App() {
     </div>
   );
 }
+
+export default connect(null,{AddUser})(App);
 
