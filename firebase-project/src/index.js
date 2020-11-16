@@ -5,17 +5,46 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
 import { BrowserRouter as Router} from 'react-router-dom';
-import rootReducer from './redux/store';
+import rootReducer from './redux/reducers/rootRedusers';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createFirestoreInstance, getFirestore, reduxFirestore } from 'redux-firestore';
-import { ReactReduxFirebaseProvider, getFirebase } from 'react-redux-firebase';
+import { ReactReduxFirebaseProvider,reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import fbConfig from './config/fbConfig';
 import firebase from 'firebase/app';
 
+
+// import store from './redux/store';
+
+// const rrfConfig = {
+//   userProfile:'users',
+//   useFirestoreForProfile:true
+// };
+
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+// const store = createStore(
+//     rootReducers, 
+//     composeEnhancers(
+//         reactReduxFirebase(fbConfig, rrfConfig),
+//         reduxFirestore(fbConfig), 
+//     applyMiddleware(thunk.withExtraArgument({getFirebase,getFirestore})),
+    
+     
+//     )
+// );
+
+const rrfConfig = {
+  userProfile:'users',
+  useFirestoreForProfile:true
+};
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
   rootReducer,
-  compose(
+  composeEnhancers(
+    
       applyMiddleware(thunk.withExtraArgument({ getFirestore, getFirebase })),
       reduxFirestore(firebase, fbConfig)
   )
@@ -23,10 +52,14 @@ const store = createStore(
 
 const rrfProps = {
   firebase,
-  config: fbConfig,
+  config: rrfConfig,
   dispatch: store.dispatch,
   createFirestoreInstance
 };
+
+{/* <ReactReduxFirebaseProvider {...rrfProps}>
+          <App />
+      </ReactReduxFirebaseProvider> */}
 
 ReactDOM.render(
   <Provider store={store}>

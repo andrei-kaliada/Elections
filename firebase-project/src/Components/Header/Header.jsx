@@ -9,6 +9,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {NavLink} from 'react-router-dom';
 import SignedLinks from './SignedLinks/SignedLinks';
 import styled from 'styled-components';
+import './Header.css';
+import logoImage from '../../assets/images/logo.png'
 
 const HeaderContent = styled.div`
 
@@ -16,6 +18,22 @@ display: flex;
 width: 100%;
 justify-content: space-between;
 align-items: center;
+`;
+
+const Logo = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img{
+      width: 32px;
+      height: 32px;
+    }
+
+  a{
+    color:#000;
+    text-decoration:none;
+  }
 `;
 
 const drawerWidth = 240;
@@ -103,14 +121,20 @@ export default function Header({handleDrawerOpen}) {
           <HeaderContent>
             <div className="header-content__logo">
             <Typography variant="h6" noWrap>
+              <Logo>
+              <img src={logoImage} alt="logo"/>
             <NavLink to="/">
-                Country
+            
+                <p>Country</p>
             </NavLink>
+              </Logo>
+           
             </Typography>
             </div>
             <div className="header-content__profile">
                 <SignedLinks />
             </div>
+            
           </HeaderContent>
           
         </Toolbar>

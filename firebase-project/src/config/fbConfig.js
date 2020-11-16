@@ -17,7 +17,7 @@
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-  firebase.firestore().settings({timestampsInSnapshots:true});
+  firebase.auth();
+  firebase.firestore();
 
   export default firebase;

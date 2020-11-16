@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Styles } from "./StylesForm";
+import { connect } from 'react-redux';
 import { Formik, useField, Form } from "formik";
 import * as Yup from "yup";
 import classNames from "classnames";
+import fire from '../../config/fbConfig';
+import * as actions from '../../redux/actions/index';
+import { Route, Switch, Redirect } from "react-router-dom";
 
 // const CustomTextInput = ({label, ...props})=> {
 
@@ -19,8 +23,69 @@ import classNames from "classnames";
 //     );
 // }
 
+
+
+
 const CustomTextInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
+  const [user, setUser] = useState("");
+
+  // useEffect(() => {
+    
+  //   return () => {
+  //     authListener();
+  //   }
+  // }, [])
+
+
+  // const handleLogin = () => {
+  //   fire
+  //   .auth()
+  //   .signInWithEmailAndPassword(email,password)
+  //   .catch(err => {
+  //     switch(err.code){
+  //       case"auth/invalid-email":
+  //       case"auth/user-disabled":
+  //       case "auth/user-not-found":
+  //         setEmailError(err.message);
+  //         break;
+  //       case "auth/wrong-password":
+  //         setPasswordError(err.message);
+  //         break;
+  //     }
+  //   })
+  // }
+  
+  // const handleSignUp = () => {
+  //   fire
+  //   .auth()
+  //   .createUserWithEmailAndPassword(email,password)
+  //   .catch(err => {
+  //     switch(err.code){
+  //       case"auth/email-already-in-use":
+  //       case"auth/invalid-email":
+  //         setEmailError(err.message);
+  //         break;
+  //       case "auth/weak-password":
+  //         setPasswordError(err.message);
+  //         break;
+  //     }
+  //   })
+  // }
+  
+  // const handleLogOut = () => {
+  //   fire.auth().signOut();
+  // }
+  
+  // const authListener = () => {
+  //   fire.auth().onAuthStateChanged(user => {
+  //     if(user){
+  //       setUser(user)
+  //     }else{
+  //       setUser("");
+  //     }
+  //   })
+  // }
 
   return (
     <>
@@ -32,7 +97,7 @@ const CustomTextInput = ({ label, ...props }) => {
   );
 };
 
-const FormSingUp = () => {
+const FormSingUp = ({signUp}) => {
   return (
     <Formik
       initialValues={{
@@ -47,17 +112,23 @@ const FormSingUp = () => {
           .required("Required"),
         email: Yup.string().email("Invalid email address").required("Required"),
         password: Yup.string()
-          .min(3, "Must be at least 3 characters")
-          .max(15, "Must be 15 characters or less")
+          .min(8, "Must be at least 8 characters")
+          .max(20, "Must be 20 characters or less")
           .required("Required"),
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        console.log("Success!!!");
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          resetForm();
-          setSubmitting(false);
-        }, 3000);
+        setTimeout(()=>{
+          alert("Success. You are created account.");
+        console.log(JSON.stringify(values, null, 2));
+        signUp(values);
+        resetForm();
+        setSubmitting(false);
+        },3000)
+        // alert("Success. You are created account.");
+        // console.log(JSON.stringify(values, null, 2));
+        // signUp(values);
+        // resetForm();
+        // setSubmitting(false);
       }}
     >
       {(props) => (
@@ -82,9 +153,9 @@ const FormSingUp = () => {
               type="password"
               placeholder="Password"
             />
-            <button type="submit">
-              {props.isSubmitting ? "Loading..." : "Sign Up"}
-            </button>
+            {props.isSubmitting ?  <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : <button type="submit">
+              Sign In
+            </button>}
           </Form>
         </div>
       )}
@@ -109,9 +180,11 @@ const FormSingIn = () => {
       onSubmit={(values, { setSubmitting, resetForm }) => {
         console.log("Success!!!");
         setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
+          // alert(JSON.stringify(values, null, 2));
+          alert('Success. You are Sign In!')
           resetForm();
           setSubmitting(false);
+          <Redirect to="/"/>
         }, 3000);
       }}
     >
@@ -132,9 +205,11 @@ const FormSingIn = () => {
               placeholder="Password"
             />
             <a href="#">Forgot your password?</a>
-            <button type="submit">
-              {props.isSubmitting ? "Loading..." : "Sign In"}
-            </button>
+           
+            {props.isSubmitting ?  <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> : <button type="submit">
+              Sign In
+            </button>}
+            
           </Form>
         </div>
       )}
@@ -142,7 +217,7 @@ const FormSingIn = () => {
   );
 };
 
-export default function FormComponent() {
+const FormComponent = ({signUp}) => {
   const [activeRegister, setActiveRegister] = useState(false);
 
   return (
@@ -154,7 +229,7 @@ export default function FormComponent() {
           })}
           id="container"
         >
-          <FormSingUp />
+          <FormSingUp signUp={signUp}/>
           <FormSingIn />
           <div className="overlay-container">
             <div className="overlay">
@@ -189,3 +264,15 @@ export default function FormComponent() {
     </Styles>
   );
 }
+
+const mapStateToProps = (state) => {
+  return{
+
+  }
+}
+
+const mapDispatchToProps = {
+  signUp:actions.signUp
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(FormComponent);
