@@ -5,8 +5,9 @@ import { Formik, useField, Form } from "formik";
 import * as Yup from "yup";
 import classNames from "classnames";
 import fire from '../../config/fbConfig';
-import * as actions from '../../redux/actions/index';
+import {signUp, signIn} from '../../redux/actions/index';
 import { Route, Switch, Redirect } from "react-router-dom";
+import history from '../../history/history';
 
 // const CustomTextInput = ({label, ...props})=> {
 
@@ -118,12 +119,12 @@ const FormSingUp = ({signUp}) => {
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         setTimeout(()=>{
-          alert("Success. You are created account.");
+          // alert("Success. You are created account.");
         console.log(JSON.stringify(values, null, 2));
         signUp(values);
         resetForm();
         setSubmitting(false);
-        },3000)
+        },0)
         // alert("Success. You are created account.");
         // console.log(JSON.stringify(values, null, 2));
         // signUp(values);
@@ -163,7 +164,7 @@ const FormSingUp = ({signUp}) => {
   );
 };
 
-const FormSingIn = () => {
+const FormSingIn = ({signIn}) => {
   return (
     <Formik
       initialValues={{
@@ -181,11 +182,11 @@ const FormSingIn = () => {
         console.log("Success!!!");
         setTimeout(() => {
           // alert(JSON.stringify(values, null, 2));
-          alert('Success. You are Sign In!')
+          signIn(values);
+          // alert('Success. You are Sign In!');
           resetForm();
           setSubmitting(false);
-          <Redirect to="/"/>
-        }, 3000);
+        }, 0);
       }}
     >
       {(props) => (
@@ -217,7 +218,7 @@ const FormSingIn = () => {
   );
 };
 
-const FormComponent = ({signUp}) => {
+const FormComponent = ({signUp, signIn}) => {
   const [activeRegister, setActiveRegister] = useState(false);
 
   return (
@@ -230,7 +231,7 @@ const FormComponent = ({signUp}) => {
           id="container"
         >
           <FormSingUp signUp={signUp}/>
-          <FormSingIn />
+          <FormSingIn signIn={signIn} />
           <div className="overlay-container">
             <div className="overlay">
               <div className="overlay-panel overlay-left">
@@ -271,8 +272,12 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {
-  signUp:actions.signUp
-}
+// const mapDispatchToProps = (dispatch) =>{
+//   return {
+//     signUp:actions.signUp,
+//     signIn:actions.signIn,
+//   }
+// } 
 
-export default connect(mapStateToProps,mapDispatchToProps)(FormComponent);
+
+export default connect(mapStateToProps,{signUp,signIn})(FormComponent);

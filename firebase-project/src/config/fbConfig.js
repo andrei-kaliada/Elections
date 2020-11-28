@@ -1,11 +1,10 @@
-  import firebase from 'firebase/app';
-  import "firebase/firestore";
-  import "firebase/auth";
-  import 'firebase/analytics';
+  import  firebase from 'firebase';
+
+
 
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  var firebaseConfig = {
+  let firebaseConfig = {
     apiKey: "AIzaSyAzBFgV5bkW8iEjsafW1GbgCXkJQ7NL6j4",
     authDomain: "countryprojektzespoowy.firebaseapp.com",
     databaseURL: "https://countryprojektzespoowy.firebaseio.com",
@@ -17,7 +16,8 @@
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  firebase.auth();
-  firebase.firestore();
+
+
+//  console.log(firebase.database());
 
   export default firebase;

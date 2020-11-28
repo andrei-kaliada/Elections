@@ -75,6 +75,7 @@ button.ghost {
 	display: flex;
 		justify-content: center;
 		align-item:center;
+		margin-top:30px;
 }
 
 form {
@@ -113,6 +114,7 @@ input {
 	top: 0;
 	height: 100%;
 	transition: all 0.6s ease-in-out;
+
 }
 
 .sign-in-container {

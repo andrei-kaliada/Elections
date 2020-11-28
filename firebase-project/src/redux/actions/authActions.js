@@ -1,41 +1,55 @@
 import React from "react";
+import {getUserAction} from '../reducers/authReducer';
+import firebase from 'firebase';
 
-export const signUp = (data) => async (
-  
-  dispathc,
-  getState,
-  { getFirebase, getFirestore }
-) => {
-  
-  const firebase = getFirebase();
-  const firestore = getFirestore();
+import {setCurrentUser} from '../reducers/authReducer';
+
+export const signUp = (data) => async (dispatch,getState) => {
 
   try {
-    const res = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(data.email, data.password);
+    const db = await firebase.database();
+    firebase  
+    .auth()
+    .createUserWithEmailAndPassword(data.email, data.password)
+      .then( response => {
+        db.ref('Users').push({
+          password:data.password,
+          email:data.email
+        });
+        console.log(`Response: ${response}`);
+        console.log(`Successful!!!`);
+      })
 
-    console.log(res.user.uid);
 
-    let docRef = firestore.enablePersistence().collection("CityCandidates").doc("1");
+  } catch (error) {
+    console.log("Error:"+error);
+  }
+};
 
-    docRef.get().then(function(doc) {
-      if (doc.exists) {
-          console.log("Document data:", doc.data());
-      } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-      }
-  }).catch(function(error) {
-      console.log("Error getting document:", error);
-  });
+export const signIn = (data) => async (dispatch,getState) => {
+ 
+  try {
+    const db = await firebase.database();
+    firebase  
+    .auth()
+    .signInWithEmailAndPassword(data.email, data.password)
+      .then( response => {
+        console.log(response);
+        
+        firebase.database().ref('Users').on('value',(snap)=>{
+          console.log(snap.val());
+          console.log(response.user.providerData[0].email);
+          const userEmail = response.user.providerData[0].email;
+          const dataUsers = snap.val();
+          Object.keys(dataUsers).map( (el) => dataUsers[el].email.toLowerCase() === userEmail ? dispatch(setCurrentUser([dataUsers[el]])) : console.log("Wrong user"));
+        });
+
+      })
+
+
+  } catch (error) {
+    console.log("Error:"+error);
+  }
     
-  //   await firestore.collection('users').doc(res.user.uid).set({
-  //     name:data.name
-      
-  //   }).then(function() {
-      
-  //     console.log("Document successfully written!");
-  // })
-  } catch (error) {}
+  
 };

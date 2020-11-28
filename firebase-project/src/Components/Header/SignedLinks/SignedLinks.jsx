@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import styled from 'styled-components';
+import firebase from 'firebase';
 
 const ListRight = styled.ul`
 
@@ -26,10 +27,21 @@ const ListRight = styled.ul`
 `;
 
 export default function SignedLinks() {
+
+    const handleSignOut = () => {
+     
+        firebase
+        .auth()
+        .signOut()
+        .then( res => {
+            console.log(res);
+        })
+    }
+
     return (
         <ListRight>
             <li><NavLink to="/form">LogIn</NavLink></li>
-            
+            <li><button onClick={handleSignOut}>Sign Out</button></li>
         </ListRight>
     )
 }

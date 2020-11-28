@@ -12,6 +12,7 @@ import { createFirestoreInstance, getFirestore, reduxFirestore } from 'redux-fir
 import { ReactReduxFirebaseProvider,reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import fbConfig from './config/fbConfig';
 import firebase from 'firebase/app';
+import history from './history/history';
 
 
 // import store from './redux/store';
@@ -50,6 +51,8 @@ const store = createStore(
   )
 );
 
+window.state = store;
+
 const rrfProps = {
   firebase,
   config: rrfConfig,
@@ -63,7 +66,7 @@ const rrfProps = {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
     <ReactReduxFirebaseProvider {...rrfProps}>
           <App />
       </ReactReduxFirebaseProvider>

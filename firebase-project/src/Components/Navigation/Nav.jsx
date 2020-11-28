@@ -7,6 +7,9 @@ import ApartmentIcon from '@material-ui/icons/Apartment';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import PersonIcon from '@material-ui/icons/Person';
+import CallIcon from '@material-ui/icons/Call';
+import EmailIcon from '@material-ui/icons/Email';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const Navigation = styled.div`
 
@@ -66,18 +69,6 @@ export default function Nav() {
             <p>Election</p>
           </li>
           </NavLink>
-          <NavLink to="/local">
-            <li className="navigation__title">
-              <ApartmentIcon />
-            <p>Local</p>
-            </li>
-          </NavLink>
-          <NavLink to="/referendum">
-          <li className="navigation__title">
-            <QuestionAnswerIcon />
-            <p>Referendum</p>
-          </li>
-          </NavLink>
           
         </ul>
       </div>
@@ -96,6 +87,37 @@ export default function Nav() {
          <p> Profile</p>
           </li>
         </NavLink>
+          
+        </ul>
+      </div>
+      <div className="navigation__profile-list">
+        <SectionsTitle>Support</SectionsTitle>
+        <ul>
+        <NavLink to="/form">
+        <li className="navigation__title">
+          <CallIcon />
+          <p>Call Us</p>
+          </li>
+        </NavLink>
+        <NavLink to="/profile">
+        <li className="navigation__title">
+          <EmailIcon />
+         <p> Email Us</p>
+          </li>
+        </NavLink>
+          
+        </ul>
+      </div>
+      <div className="navigation__profile-list">
+        <SectionsTitle>Settings</SectionsTitle>
+        <ul>
+        <NavLink to="/form">
+        <li className="navigation__title">
+          <SettingsIcon />
+          <p>Call Us</p>
+          </li>
+        </NavLink>
+
           
         </ul>
       </div>

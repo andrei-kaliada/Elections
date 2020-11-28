@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useEffect } from "react";
 import "./App.css";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -11,13 +11,17 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Navigation from "./Components//Navigation/Nav";
 import FormTest from "./Components/Form/FormTest";
-import MainPage from "./Components/MainPage/MainPage";
+import MainPage from "./Components/MainPageContainer/MainPage";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Header from "./Components/Header/Header";
+import HeaderContainer from "./Components/Header/HeaderContainer";
 import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { AddUser } from "./redux/actions/addUser";
+import { setCurrentUser } from "./redux/reducers/authReducer";
+import ElectionsContainer from './Components/Elections/ElectionsContent';
+import ProfileContainer from './Components/Profile/ProfileContainer';
 import classNames from "classnames";
+import firebase from 'firebase';
 
 const drawerWidth = 240;
 
@@ -82,6 +86,27 @@ function App(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [pending,setPending] = React.useState(true);
+
+  useEffect(() => {
+    
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+       console.log(user);
+      //  props.setCurrentUser(user.providerData)
+      firebase.database().ref('Users').on('value',(snap)=>{
+        console.log(snap.val());
+        console.log(user.providerData[0].email);
+        const userEmail = user.providerData[0].email;
+        const dataUsers = snap.val();
+        Object.keys(dataUsers).map( (el) => dataUsers[el].email.toLowerCase() === userEmail ? props.setCurrentUser([dataUsers[el]]) : console.log("Wrong user"));
+      });
+       setPending(false);
+      } else {
+        console.log("No user!")
+      }
+    });
+  }, [])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -91,10 +116,14 @@ function App(props) {
     setOpen(false);
   };
 
+  // if(pending == true){
+  //   return <Redirect to={'/'} />
+  // }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <Header handleDrawerOpen={handleDrawerOpen} />
+      <HeaderContainer handleDrawerOpen={handleDrawerOpen} />
       <Drawer
         className={classes.drawer }
         variant='persistent'
@@ -123,17 +152,9 @@ function App(props) {
       >
         <div className={classNames(classes.drawerHeader,"test")} />
         <Switch>
-          <Route exact path='/' render={() => (
-              <div style={{ display: "flex",justifyContent: "center",alignItems: "center",}}>
-                <h1>Main page </h1>
-              </div>
-            )}
+          <Route exact path='/' render={() => (<MainPage />)}
           />
-          <Route exact path='/election' render={() => (
-              <div style={{ display: "flex",justifyContent: "center",alignItems: "center",}}>
-                <h1>Election </h1>
-              </div>
-            )}
+          <Route exact path='/election' render={() => (<ElectionsContainer />)}
           />
           <Route exact path='/local' render={() => (
               <div style={{ display: "flex",justifyContent: "center",alignItems: "center",}}>
@@ -147,11 +168,7 @@ function App(props) {
               </div>
             )}
           />
-          <Route exact path='/profile' render={() => (
-              <div style={{ display: "flex",justifyContent: "center",alignItems: "center",}}>
-                <h1>Profile </h1>
-              </div>
-            )}
+          <Route exact path='/profile' render={() => (<ProfileContainer />)}
           />
           <Route exact path='/form' render={() => <FormTest />} />
           <Redirect to='/' />
@@ -161,4 +178,4 @@ function App(props) {
   );
 }
 
-export default connect(null, { AddUser })(App);
+export default connect(null, { AddUser, setCurrentUser })(App);

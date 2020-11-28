@@ -36,6 +36,12 @@ const Logo = styled.div`
   }
 `;
 
+const HeaderContentProfile = styled.div`
+
+  display:flex;
+
+`;
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -95,8 +101,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header({handleDrawerOpen}) {
-
+export default function Header({handleDrawerOpen,user}) {
+console.log(user)
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
@@ -131,9 +137,10 @@ export default function Header({handleDrawerOpen}) {
            
             </Typography>
             </div>
-            <div className="header-content__profile">
+            <HeaderContentProfile>
                 <SignedLinks />
-            </div>
+                {user && user.map(elem =>( <NavLink to="/profile"><p>{elem.email}</p></NavLink>))}
+            </HeaderContentProfile>
             
           </HeaderContent>
           
