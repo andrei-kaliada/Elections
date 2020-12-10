@@ -99,32 +99,50 @@ const CustomTextInput = ({ label, ...props }) => {
 };
 
 const FormSingUp = ({signUp}) => {
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
   return (
     <Formik
       initialValues={{
         name: "",
         email: "",
         password: "",
+        lastname:"",
+        city:"",
+        phone:"",
+        passport:"",
       }}
       validationSchema={Yup.object({
         name: Yup.string()
           .min(3, "Must be at least 3 characters")
-          .max(15, "Must be 15 characters or less")
+          .max(10, "Must be 10 characters or less")
           .required("Required"),
         email: Yup.string().email("Invalid email address").required("Required"),
         password: Yup.string()
           .min(8, "Must be at least 8 characters")
           .max(20, "Must be 20 characters or less")
           .required("Required"),
+          lastname: Yup.string()
+          .min(3, "Must be at least 3 characters")
+          .max(10, "Must be 10 characters or less")
+          .required("Required"),
+          city: Yup.string()
+          .min(3, "Must be at least 3 characters")
+          .max(10, "Must be 10 characters or less")
+          .required("Required"),
+          passport: Yup.string()
+          .min(3, "Must be at least 3 characters")
+          .max(10, "Must be 10 characters or less")
+          .required("Required"),
+          phone:Yup.string().matches(phoneRegExp, 'Phone number is not valid').required("Required").max(8, "Must be 8 characters or less"),
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         setTimeout(()=>{
           // alert("Success. You are created account.");
-        console.log(JSON.stringify(values, null, 2));
+        // console.log(JSON.stringify(values, null, 2));
         signUp(values);
         resetForm();
         setSubmitting(false);
-        },0)
+        },3000)
         // alert("Success. You are created account.");
         // console.log(JSON.stringify(values, null, 2));
         // signUp(values);
@@ -141,6 +159,30 @@ const FormSingUp = ({signUp}) => {
               name="name"
               type="text"
               placeholder="Name"
+            />
+            <CustomTextInput
+              label="LastName"
+              name="lastname"
+              type="text"
+              placeholder="Last name"
+            />
+            <CustomTextInput
+              label="City"
+              name="city"
+              type="text"
+              placeholder="City"
+            />
+            <CustomTextInput
+              label="Passport"
+              name="passport"
+              type="text"
+              placeholder="Passport"
+            />
+             <CustomTextInput
+              label="Phone"
+              name="phone"
+              type="tel"
+              placeholder="Phone"
             />
             <CustomTextInput
               label="Email"
@@ -186,7 +228,7 @@ const FormSingIn = ({signIn}) => {
           // alert('Success. You are Sign In!');
           resetForm();
           setSubmitting(false);
-        }, 0);
+        }, 3000);
       }}
     >
       {(props) => (
@@ -225,7 +267,7 @@ const FormComponent = ({signUp, signIn}) => {
     <Styles>
       <div className="form-wrapp">
         <div
-          className={classNames("container", {
+          className={classNames("container highTest", {
             "right-panel-active": activeRegister,
           })}
           id="container"

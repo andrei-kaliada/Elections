@@ -11,9 +11,6 @@ export default function usersReducer(state = initialState, action) {
             return{
                 ...state
             }
-        case 'ADD_USER_ERROR':
-            console.log(action.err);
-            return state;
 
         default:return state;
     }

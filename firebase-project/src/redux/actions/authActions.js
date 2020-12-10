@@ -12,12 +12,22 @@ export const signUp = (data) => async (dispatch,getState) => {
     .auth()
     .createUserWithEmailAndPassword(data.email, data.password)
       .then( response => {
-        db.ref('Users').push({
+        console.log(response);
+        db.ref('Users/'+response.user.uid).set({
+          name:data.name,
+          lastName:data.lastname,
+          city:data.city,
+          email:data.email,
+          passport:data.passport,
           password:data.password,
-          email:data.email
+          phone:data.phone,
+          votedCity:"no",
+          votedMayor:"no",
+          votedPresident:"no",
+          votedVer:"no",
+          
         });
-        console.log(`Response: ${response}`);
-        console.log(`Successful!!!`);
+
       })
 
 
@@ -37,13 +47,15 @@ export const signIn = (data) => async (dispatch,getState) => {
         console.log(response);
         
         firebase.database().ref('Users').on('value',(snap)=>{
-          console.log(snap.val());
-          console.log(response.user.providerData[0].email);
+        console.log(response.user.providerData[0].email);
+        console.log(snap.val());
           const userEmail = response.user.providerData[0].email;
           const dataUsers = snap.val();
           Object.keys(dataUsers).map( (el) => dataUsers[el].email.toLowerCase() === userEmail ? dispatch(setCurrentUser([dataUsers[el]])) : console.log("Wrong user"));
         });
 
+      }).catch(err => {
+        alert(err.message);
       })
 
 

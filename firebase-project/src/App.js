@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import Navigation from "./Components//Navigation/Nav";
+import NavContainer from "./Components//Navigation/NavContainer";
 import FormTest from "./Components/Form/FormTest";
 import MainPage from "./Components/MainPageContainer/MainPage";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -19,7 +19,11 @@ import { connect } from "react-redux";
 import { AddUser } from "./redux/actions/addUser";
 import { setCurrentUser } from "./redux/reducers/authReducer";
 import ElectionsContainer from './Components/Elections/ElectionsContent';
+import CityKievContainer from './Components/Elections/CityElections/CityKiev/CityKievContainer';
 import ProfileContainer from './Components/Profile/ProfileContainer';
+import CityElectionsContainer from './Components/Elections/CityElections/CityElectionsContainer';
+import EmailUs from './Components/Email/EmailUs';
+import Feedback from './Components/Feedback/Feedback';
 import classNames from "classnames";
 import firebase from 'firebase';
 
@@ -92,21 +96,20 @@ function App(props) {
     
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-       console.log(user);
+      
       //  props.setCurrentUser(user.providerData)
       firebase.database().ref('Users').on('value',(snap)=>{
-        console.log(snap.val());
-        console.log(user.providerData[0].email);
+        
         const userEmail = user.providerData[0].email;
         const dataUsers = snap.val();
-        Object.keys(dataUsers).map( (el) => dataUsers[el].email.toLowerCase() === userEmail ? props.setCurrentUser([dataUsers[el]]) : console.log("Wrong user"));
+        Object.keys(dataUsers).map( (el) => dataUsers[el].email.toLowerCase() === userEmail ? props.setCurrentUser([dataUsers[el]]) : null);
       });
        setPending(false);
       } else {
         console.log("No user!")
       }
     });
-  }, [])
+  }, [props.isAuth])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -143,7 +146,7 @@ function App(props) {
           </IconButton>
         </div>
         <Divider />
-        <Navigation />
+        <NavContainer />
       </Drawer>
       <main
         className={clsx(classes.content, {
@@ -154,28 +157,32 @@ function App(props) {
         <Switch>
           <Route exact path='/' render={() => (<MainPage />)}
           />
-          <Route exact path='/election' render={() => (<ElectionsContainer />)}
+          <Route  path='/election' render={() => (<ElectionsContainer />)}/>
+          <Route  path='/cityElections' render={() => (<CityElectionsContainer />)}
           />
-          <Route exact path='/local' render={() => (
-              <div style={{ display: "flex",justifyContent: "center",alignItems: "center",}}>
-                <h1>Local </h1>
-              </div>
-            )}
+          <Route  path='/cityKiev' render={() => (<CityKievContainer />)}
           />
-          <Route exact path='/referendum' render={() => (
-              <div style={{ display: "flex",justifyContent: "center",alignItems: "center",}}>
-                <h1>Referendum </h1>
-              </div>
-            )}
+          <Route  path='/profile' render={() => (<ProfileContainer />)}
           />
-          <Route exact path='/profile' render={() => (<ProfileContainer />)}
-          />
-          <Route exact path='/form' render={() => <FormTest />} />
-          <Redirect to='/' />
+          <Route path='/feedback' render={() => (<Feedback />)} />
+          <Route path='/emailUs' render={() => (<EmailUs />)} />
+          <Route path='/form' render={() => <FormTest />} />
+          <Route path='/page404' render={() => (
+            <div style={{height:"500px",marginTop:"50px",display:"flex",justifyContent:"center",alignItems:"center"}}>
+              <h1 style={{fontSize:"48px", color:"#fff",textShadow:"2px 2px #000"}}>Sorry, page not founded!!!</h1>
+            </div>
+          )} />
+          <Redirect to='/page404'/>
         </Switch>
       </main>
     </div>
   );
 }
 
-export default connect(null, { AddUser, setCurrentUser })(App);
+const mapStateToProps = (state) => {
+  return{
+    isAuth:state.auth.isAuth
+  }
+}
+
+export default connect(mapStateToProps, { AddUser, setCurrentUser })(App);

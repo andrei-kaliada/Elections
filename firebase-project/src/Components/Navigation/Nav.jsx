@@ -10,6 +10,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import CallIcon from '@material-ui/icons/Call';
 import EmailIcon from '@material-ui/icons/Email';
 import SettingsIcon from '@material-ui/icons/Settings';
+import firebase from "firebase";
 
 const Navigation = styled.div`
 
@@ -50,7 +51,18 @@ border-top:1px solid #e3e3e3;
 padding:15px 0 0 20px;
 font-weight:500;
 `;
-export default function Nav() {
+export default function Nav({handleSignOutUser}) {
+  const handleSignOut = () => {
+     
+    firebase
+    .auth()
+    .signOut()
+    .then( res => {
+        console.log(res);
+        
+    })
+    handleSignOutUser();
+}
   return (
     <Navigation>
       <div className="navigation__main-list">
@@ -78,7 +90,7 @@ export default function Nav() {
         <NavLink to="/form">
         <li className="navigation__title">
           <ArrowBackIcon />
-          <p>LogOut</p>
+          <p onClick={handleSignOut}>LogOut</p>
           </li>
         </NavLink>
         <NavLink to="/profile">
@@ -93,13 +105,13 @@ export default function Nav() {
       <div className="navigation__profile-list">
         <SectionsTitle>Support</SectionsTitle>
         <ul>
-        <NavLink to="/form">
+        <NavLink to="/feedback">
         <li className="navigation__title">
           <CallIcon />
           <p>Call Us</p>
           </li>
         </NavLink>
-        <NavLink to="/profile">
+        <NavLink to="/emailUs">
         <li className="navigation__title">
           <EmailIcon />
          <p> Email Us</p>
@@ -114,7 +126,7 @@ export default function Nav() {
         <NavLink to="/form">
         <li className="navigation__title">
           <SettingsIcon />
-          <p>Call Us</p>
+          <p>Settings</p>
           </li>
         </NavLink>
 

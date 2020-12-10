@@ -127,6 +127,10 @@ input {
 	transform: translateX(100%);
 }
 
+.highTest{
+	min-height:560px;
+}
+
 .sign-up-container {
 	left: 0;
 	width: 50%;

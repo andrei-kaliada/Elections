@@ -18,6 +18,28 @@ display: flex;
 width: 100%;
 justify-content: space-between;
 align-items: center;
+
+.linkProfile{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration:none;
+    color:#fff;
+}
+
+.wrappProfileIcon{
+  border: 1px solid #e3e3e3;
+    border-radius: 50%;
+    padding: 10px;
+    font-weight:bold;
+    text-shadow: 2px 2px #000;
+  
+}
+.wrappProfileIcon:hover{
+  
+  background-color:black;
+  transition:0.4s;
+}
 `;
 
 const Logo = styled.div`
@@ -37,10 +59,10 @@ const Logo = styled.div`
 `;
 
 const HeaderContentProfile = styled.div`
-
   display:flex;
-
 `;
+
+
 
 const drawerWidth = 240;
 
@@ -101,8 +123,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header({handleDrawerOpen,user}) {
-console.log(user)
+export default function Header({handleDrawerOpen,user, isAuth, handleSignOutUser}) {
+  console.log(user)
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
@@ -130,16 +152,14 @@ console.log(user)
               <Logo>
               <img src={logoImage} alt="logo"/>
             <NavLink to="/">
-            
                 <p>Country</p>
             </NavLink>
               </Logo>
-           
             </Typography>
             </div>
             <HeaderContentProfile>
-                <SignedLinks />
-                {user && user.map(elem =>( <NavLink to="/profile"><p>{elem.email}</p></NavLink>))}
+                <SignedLinks isAuth={isAuth} handleSignOutUser={handleSignOutUser}/>
+      {isAuth ? user.map((elem,index) =>( <NavLink className="linkProfile" key={index} to="/profile"><p className="wrappProfileIcon">{`${elem.name.slice(0,1)} ${elem.lastName.slice(0,1)}`}</p> </NavLink>)) : null}
             </HeaderContentProfile>
             
           </HeaderContent>

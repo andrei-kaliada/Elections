@@ -1,13 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import unnamedImage from '../../assets/images/unnamed.png';
+import unnamedImage from '../../../../assets/images/unnamed.png';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PhoneIcon from '@material-ui/icons/Phone';
 import { makeStyles } from '@material-ui/core/styles';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import IconButton from '@material-ui/core/IconButton';
-import firebase from 'firebase';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import { useSpring, animated } from 'react-spring/web.cjs';
+import voteImg from '../../../../assets/icons/vote.png'
 
 const WrapperContainer = styled.div`
 display:flex;
@@ -37,7 +44,7 @@ const ProfileData = styled.div`
 `;
 
 const TestContainer = styled.div`
-margin-top:115px;
+margin-top: 50px;
 .card {
   max-width: 340px;
   margin: auto;
@@ -90,6 +97,7 @@ margin-top:115px;
   .card-jobtitle {
     left: 86px;
     transform: none;
+    
   }
 
   .card-fullname {
@@ -100,7 +108,7 @@ margin-top:115px;
   .card-jobtitle {
     bottom: 16px;
     letter-spacing: 1px;
-    font-size: 10px;
+
   }
 }
 
@@ -168,6 +176,8 @@ margin-top:115px;
   margin: 0;
   left: 50%;
   transform: translateX(-50%) translateY(-7px);
+  font-weight:bold;
+    font-size:13px;
 }
 
 .card-main {
@@ -373,35 +383,129 @@ margin-top:115px;
 
 `;
 
-const CardContentCity = styled.div`
-  display:flex;
-  align-items:center;
+const WrapperAge = styled.div`
+  text-align:center;
+  font-size:24px;
+`;
+
+
+const WrapperContent = styled.div`
   p{
-    font-weight:bold;
-    margin-left:10px;
-    font-size:16px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    text-shadow: 1px 1px #000;
   }
 `;
 
-const CardContentPassport = styled.div`
-display:flex;
-align-items:center;
-p{
-  font-weight:bold;
-  margin-left:10px;
-  font-size:16px;
+const WrapperBtn = styled.div`
+  button{
+    display:block;
+    margin:0 auto;
+  }
+`;
+
+const WrapperModal = styled.div`
+  position:absolute;
+  top: 30%;
+  left: 35%;
+  z-index: 99;
+  width: 400px;
+  height: 300px;
+ 
+  border-radius: 20px;
+  background: #fff;
+`;
+
+const HeaderModal = styled.div`
+height: 80px;
+background: linear-gradient(90deg,rgba(2,0,36,1) 0%,rgba(0,212,255,1) 0%,rgba(118,118,179,1) 100%);
+border-radius: 20px 20px 0 0;
+display: flex;
+justify-content: space-between;
+align-items: center;
+
+img{
+  width: 40px;
+    margin-right: 10px;
 }
 `;
 
-const CardContentPhone = styled.div`
-display:flex;
-align-items:center;
-p{
-  font-weight:bold;
-  margin-left:10px;
-  font-size:16px;
-}
+
+const HeaderModalText = styled.div`
+margin-left: 20px;
+color: #fff;
+font-weight: bold;
+text-transform: uppercase;
+font-size: 24px;
+
 `;
+
+
+const MainContentModal = styled.div`
+height: 150px;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 28px;
+text-align: center;
+font-weight: bold;
+`;
+
+
+const ButtonsModal = styled.div`
+display: flex;
+justify-content: space-around;
+align-items: center;
+
+.btnBack{
+  background: rgb(2,0,36);
+background: linear-gradient(3deg, rgba(2,0,36,1) 0%, rgba(0,212,255,1) 0%, rgba(118,128,179,1) 100%);
+border: 0;
+    padding: 15px 40px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor:pointer;
+
+    &:hover{
+      transition:0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    &:focus { outline: none; }
+
+}
+
+.btnVote{
+ 
+background: rgb(2,0,36);
+background: linear-gradient(3deg, rgba(2,0,36,1) 0%, rgba(0,212,255,1) 0%, rgba(118,179,134,1) 100%);
+border: 0;
+    padding: 15px 40px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor:pointer;
+
+    &:hover{
+      transition:0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    &:focus { outline: none; }
+
+}
+
+
+`;
+
+
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -412,124 +516,155 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
+root: {
+  flexGrow: 1,
+},
+paper: {
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+},
+modal: {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
 }));
 
-export default function Profile({userData}) {
-  const classes = useStyles();
-const [image, setImage] = React.useState(null);
-const {email,city,passport,name,lastName,phone, imageUrl} = userData[0];
-console.log(userData);
-
-
-
-const handleChangeImage = async (event) =>{
-  event.preventDefault();
-  console.log(event.target.files[0].name)
-  
-    setImage(event.target.files[0]);
-    console.log(event.target.files[0])
-    console.log(image)
-    let storageRef = firebase.storage().ref(`images/${event.target.files[0].name}`).put(event.target.files[0]);
-    storageRef.on(
-      "state_changed",
-      snapshot => {},
-      error => {
-        console.log(error);
-      },
-      
-      () => {
-        firebase.storage()
-        .ref("images")
-        .child(event.target.files[0].name)
-        .getDownloadURL()
-        .then(url => {
-          console.log(url);
-          firebase.auth().onAuthStateChanged(function(user) {
-     
-            firebase.database().ref('Users').on('value',(snap)=>{
-              
-              const userEmail = user.providerData[0].email;
-              const dataUsers = snap.val();
-              console.log(dataUsers);
-              console.log(userEmail);
-              Object.keys(dataUsers).map( (el) => {
-                if(dataUsers[el].email.toLowerCase() === userEmail){
-                  firebase.database().ref('Users/' + el).set({
-                    ...dataUsers[el],
-                    imageUrl:url
-
-                  });
-                }
-
-              });
-            });
-
-            
-          });
-          
-        })
+const Fade = React.forwardRef(function Fade(props, ref) {
+  const { in: open, children, onEnter, onExited, ...other } = props;
+  const style = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: open ? 1 : 0 },
+    onStart: () => {
+      if (open && onEnter) {
+        onEnter();
       }
+    },
+    onRest: () => {
+      if (!open && onExited) {
+        onExited();
+      }
+    },
+  });
 
-    )
-  
-}
+  return (
+    <animated.div ref={ref} style={style} {...other}>
+      {children}
+    </animated.div>
+  );
+});
+
+const ModalWindow = ({name, handleClose}) => {
+    return(
+      <WrapperModal>
+        <HeaderModal>
+          <HeaderModalText>
+            Vote
+          </HeaderModalText>
+          <img src={voteImg} alt="icon"/>
+        </HeaderModal>
+        <MainContentModal>
+    Are you sure want to vote for {name}?
+        </MainContentModal>
+        <ButtonsModal>
+          <button onClick={handleClose} className="btnBack">Back</button>
+          <button className="btnVote">Vote</button>
+        </ButtonsModal>
+      </WrapperModal>
+    );
+};
 
 
+export default function CityKiev({cities, votedCity}) {
+  const classes = useStyles();
+  const [modal, setModal] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [name, setName] = React.useState('');
+
+  const handleOpen = (index) => {
+    setOpen(true);
+    // ModalWindow(name);
+    console.log(cities[index].name);
+    setName(cities[index].name);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+console.log(cities)
 
 
   return (
   <div>
-<TestContainer>
-<div class="card" data-state="#about">
-  <div class="card-header">
-    <div class="card-cover" ></div>
-    <div>
-      <img class="card-avatar" src={imageUrl ||unnamedImage} alt="avatar" />
-      <input
-                  onChange={(event) => handleChangeImage(event)}
-                  accept='image/*'
-                  className={classes.input}
-                  id='icon-button-file'
-                  type='file'
-                />
-                <label htmlFor='icon-button-file' style={{position: "absolute",
-                right: "33%",
-                bottom: "25%"}}>
-                  <IconButton
-                    color='primary'
-                    aria-label='upload picture'
-                    component='span'
-                  >
-                    <PhotoCamera />
-                  </IconButton>
-                </label>
+     <div>
+      <Modal
+        aria-labelledby="spring-modal-title"
+        aria-describedby="spring-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <ModalWindow handleClose={handleClose} name={name} />
+        </Fade>
+      </Modal>
     </div>
-    <h1 class="card-fullname">{`${name} ${lastName}`}</h1>
-    <h2 class="card-jobtitle">{email}</h2>
-  </div>
-  <div class="card-main">
-  <div class="card-section is-active" id="about">
-      <div class="card-content">
-        <CardContentCity>
-          <LocationCityIcon />
-            <p>City: { city}</p>
-        </CardContentCity>
-        <CardContentPassport>
-          <AssignmentIcon />
-            <p>Passport: { passport}</p>
-        </CardContentPassport>
-        <CardContentPhone>
-          <PhoneIcon />
-            <p>Phone: { phone}</p>
-        </CardContentPhone>
-      </div>
-      </div>
-  </div>
-</div>
-</TestContainer>
-
-
+    {modal ? <ModalWindow /> : null}
+    <h1 style={{textAlign:"center",fontSize:"48px", }}>Kiev</h1>
+    <Grid container spacing={1}>
+    <Grid container item xs={12} spacing={3}>
+        {
+          
+      cities && cities.map((element, index)=>(
+        
+        <React.Fragment>
+        <Grid item xs={4}>
+        <TestContainer>
+   <div class="card" data-state="#about">
+     <div class="card-header">
+       <div class="card-cover" ></div>
+       <div>
+         <img class="card-avatar" src={element.purl || unnamedImage} alt="avatar" />
+       </div>
+       <h1 class="card-fullname">{`${element.name}`}</h1>
+       <h2 class="card-jobtitle">{element.party}</h2>
+     </div>
+     <div class="card-main">
+     <div class="card-section is-active" id="about">
+         <div class="card-content">
+            <WrapperAge>
+              Age:{element.age}
+            </WrapperAge>
+            <WrapperContent>
+              <p>
+                {element.info}
+              </p>
+            </WrapperContent>
+         </div>
+         <WrapperBtn>
+         {votedCity && votedCity === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
+         </WrapperBtn>
+         </div>
+     </div>
+   </div>
+   </TestContainer>
+        </Grid>
+      </React.Fragment>
+       ))
+     
+        }
+    </Grid>
+    </Grid>
+  
 </div>
     
   )
 }
+
+
