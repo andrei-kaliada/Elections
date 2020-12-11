@@ -1,4 +1,6 @@
 import React from 'react';
+import firebase from 'firebase';
+
 const ADD_CITIES = "ADD_SITIES";
 
 const initialState = {
@@ -25,4 +27,11 @@ export const addCityAction = (cities) => {
     type:ADD_CITIES,
     payload:cities
   }
+}
+
+export const getCitiesAction = () => (dispatch) => {
+  firebase.database().ref('/CityCandidates').on('value', (snap) => {
+    console.log(snap.val());
+    dispatch(addCityAction(snap.val()));
+  })
 }

@@ -4,8 +4,16 @@ import {compose} from 'redux';
 import CityKiev from './CityKiev';
 import firebase from 'firebase';
 
+import {getCitiesAction} from '../../../../redux/reducers/cityCandidatesReducer';
+import {setVoteToUser} from '../../../../redux/actions/voteActions';
+
 const CityKievContainer = (props) => {
 
+  useEffect(()=>{
+
+    props.getCitiesAction();
+
+  },[]);
 
   return(
     <CityKiev {...props}/>
@@ -15,10 +23,10 @@ const CityKievContainer = (props) => {
 const mapStateToProps = (state) => {
   return{
     cities:state.cities.cities.Kiev,
-    votedCity:state.auth.userData[0].votedCity
+    votedCity:state.auth.userData
   }
 }
 
 export default compose(
-  connect(mapStateToProps,null),
+  connect(mapStateToProps,{getCitiesAction,setVoteToUser}),
   )(CityKievContainer);

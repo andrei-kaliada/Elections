@@ -1,17 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { connect } from 'react-redux';
 import {compose} from 'redux';
-import {addCityAction} from "../../../redux/reducers/cityCandidatesReducer";
+import {getCitiesAction} from "../../../redux/reducers/cityCandidatesReducer";
 import CityElections from './CityElections';
 import firebase from 'firebase';
 
 const CityElectionsContainer = (props) => {
 
     useEffect(()=>{
-      firebase.database().ref('/CityCandidates').on('value', (snap) => {
-        console.log(snap.val());
-        props.getCities(snap.val());
-      })
+      props.getCitiesAction();
     },[])
 
   return(
@@ -25,14 +22,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return{
-    getCities: (cities) => {
-      dispatch(addCityAction(cities))
-    }
-  }
-}
+
 
 export default compose(
-  connect(mapStateToProps,mapDispatchToProps),
+  connect(mapStateToProps,{getCitiesAction}),
   )(CityElectionsContainer);

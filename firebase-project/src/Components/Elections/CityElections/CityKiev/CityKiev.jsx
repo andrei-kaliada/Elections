@@ -555,7 +555,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   );
 });
 
-const ModalWindow = ({name, handleClose}) => {
+const ModalWindow = ({name, handleClose, indexGover,handleVote}) => {
     return(
       <WrapperModal>
         <HeaderModal>
@@ -569,24 +569,34 @@ const ModalWindow = ({name, handleClose}) => {
         </MainContentModal>
         <ButtonsModal>
           <button onClick={handleClose} className="btnBack">Back</button>
-          <button className="btnVote">Vote</button>
+          <button onClick={()=>handleVote(indexGover)} className="btnVote">Vote</button>
         </ButtonsModal>
       </WrapperModal>
     );
 };
 
 
-export default function CityKiev({cities, votedCity}) {
+export default function CityKiev({cities, votedCity,setVoteToUser}) {
   const classes = useStyles();
   const [modal, setModal] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
+  const [indexGover, setIndexGover] = React.useState(null);
+
+  const handleVote = (index) => {
+
+
+    setVoteToUser(index);
+    handleClose();
+
+  }
 
   const handleOpen = (index) => {
     setOpen(true);
     // ModalWindow(name);
     console.log(cities[index].name);
     setName(cities[index].name);
+    setIndexGover(index);
   };
 
   const handleClose = () => {
@@ -611,7 +621,7 @@ console.log(cities)
         }}
       >
         <Fade in={open}>
-          <ModalWindow handleClose={handleClose} name={name} />
+          <ModalWindow handleVote={handleVote} indexGover={indexGover} handleClose={handleClose} name={name} />
         </Fade>
       </Modal>
     </div>
@@ -648,7 +658,7 @@ console.log(cities)
             </WrapperContent>
          </div>
          <WrapperBtn>
-         {votedCity && votedCity === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
+         {votedCity[0] && votedCity[0].votedCity === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
          </WrapperBtn>
          </div>
      </div>
