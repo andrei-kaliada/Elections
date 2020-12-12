@@ -576,7 +576,7 @@ const ModalWindow = ({name, handleClose, indexGover,handleVote}) => {
 };
 
 
-export default function CityKiev({cities, votedCity,setVoteToUser}) {
+export default function CityKiev({cities, votedCity,setVoteToUser,goverments}) {
   const classes = useStyles();
   const [modal, setModal] = React.useState(false);
   const [open, setOpen] = React.useState(false);

@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
 
-export const setVoteToUser = (index) => (dispatch) => {
+export const setVoteToUser = (index) => dispatch => {
 
   firebase.auth().onAuthStateChanged(function(user) {
      
@@ -23,40 +23,59 @@ export const setVoteToUser = (index) => (dispatch) => {
     
   });
 
-  setVoteToCandidate(index);
+  console.log(index);
 
+  setVoteToCandidate(index);
 
 }
 
-const setVoteToCandidate = (index) => {
-  firebase.database().ref(`CityCandidates/Kiev/${index}/votes`).val((snap) => {
-    
+const setVoteToCandidate = (index)  => {
+
+  let dataGoverment;
+  let valueVotes;
+
+ firebase.database().ref(`CityCandidates/Kiev/${index}`).on('value',(snap) => {
+  dataGoverment = snap.val();
+  let vote = snap.val().votes;
+    decodeDiscussionId(vote);
+
+    valueVotes = encodeDiscussionId();
+   
+ 
   })
-  // encodeDiscussionId(index);
-  decodeDiscussionId();
+
+  firebase.database().ref(`CityCandidates/Kiev/${index}`).set({
+    ...dataGoverment,
+    votes:valueVotes
+  })
+
+ 
 } 
 
 
-const encodeDiscussionId = (Id) => {
+let codeArr = [];
 
-  let tempEn = Id + "";
+const encodeDiscussionId = () => {
+
+let newVote = 1 ;
   let encryptNum = "";
-  for(let i=0;i<tempEn.length();i++) {
-      let a = tempEn.charAt(i);
-      a += 21;
+  for(let i=0;i<codeArr.length;i++) {
+      let a = String.fromCharCode(codeArr[i] + newVote) ;
       encryptNum += a;
   }
+  codeArr.length = 0;
   return encryptNum;
 }
 
 const decodeDiscussionId = (encryptText) => {
 
-  let decodeText = "";
-  for(let i=0;i<encryptText.length();i++) {
-      let a = encryptText.charAt(i);
+  let decodeText = 0;
+  for(let i=0;i<encryptText.length;i++) {
+      let a = encryptText.charCodeAt(i);
+      codeArr.push(encryptText.charCodeAt(i));
       a -= 21;
       decodeText += a;
   }
-  let decodeId = parseInt(decodeText);
-  return decodeId;
+
+  return decodeText;
 }
