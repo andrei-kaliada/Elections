@@ -18,10 +18,22 @@ import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { AddUser } from "./redux/actions/addUser";
 import { setCurrentUser } from "./redux/reducers/authReducer";
+
 import ElectionsContainer from './Components/Elections/ElectionsContent';
 import CityKievContainer from './Components/Elections/CityElections/CityKiev/CityKievContainer';
+import CityWarsawContainer from './Components/Elections/CityElections/CityWarsaw/CityWarsawContainer';
+import CityNewYorkContainer from './Components/Elections/CityElections/CityNewYork/CityNewYorkContainer';
 import ProfileContainer from './Components/Profile/ProfileContainer';
 import CityElectionsContainer from './Components/Elections/CityElections/CityElectionsContainer';
+
+
+import MayorElectionsContainer from './Components/Elections/MayorCandidates/MayorElectionsContainer';
+import MayorKievContainer from './Components/Elections/MayorCandidates/CityKiev/CityKievContainer';
+import MayorWarsawContainer from './Components/Elections/MayorCandidates/CityWarsaw/CityWarsawContainer';
+import MayorNewYorkContainer from './Components/Elections/MayorCandidates/CityNewYork/CityNewYorkContainer';
+
+
+
 import EmailUs from './Components/Email/EmailUs';
 import Feedback from './Components/Feedback/Feedback';
 import classNames from "classnames";
@@ -158,10 +170,29 @@ function App(props) {
           <Route exact path='/' render={() => (<MainPage />)}
           />
           <Route  path='/election' render={() => (<ElectionsContainer />)}/>
+
+
           <Route  path='/cityElections' render={() => (<CityElectionsContainer />)}
-          />
+          /> 
           <Route  path='/cityKiev' render={() => (<CityKievContainer />)}
           />
+          <Route  path='/cityWarsaw' render={() => (<CityWarsawContainer />)}
+          />
+          <Route  path='/cityNewYork' render={() => (<CityNewYorkContainer />)}
+          />
+
+
+          <Route  path='/mayorElection' render={() => (<MayorElectionsContainer />)}
+          />
+          <Route  path='/mayorCityKiev' render={() => (<MayorKievContainer />)}
+          />
+          <Route  path='/mayorCityWarsaw' render={() => (<MayorWarsawContainer />)}
+          />
+          <Route  path='/mayorCityNewYork' render={() => (<MayorNewYorkContainer />)}
+          />
+
+
+
           <Route  path='/profile' render={() => (<ProfileContainer />)}
           />
           <Route path='/feedback' render={() => (<Feedback />)} />

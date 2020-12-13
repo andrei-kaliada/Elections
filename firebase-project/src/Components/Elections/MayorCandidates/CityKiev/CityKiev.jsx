@@ -604,7 +604,7 @@ export default function CityKiev({cities, votedCity,setVoteToUser,goverments,cit
   const handleClose = () => {
     setOpen(false);
   };
-console.log(cityUser[0].city.toLowerCase(), typeof(cityUser[0].city))
+
 
 
   return (

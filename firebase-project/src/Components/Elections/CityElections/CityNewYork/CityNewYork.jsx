@@ -576,19 +576,16 @@ const ModalWindow = ({name, handleClose, indexGover,handleVote}) => {
 };
 
 
-export default function CityKiev({cities, votedCity,setVoteToUser,goverments,cityUser}) {
+export default function CityNewYork({cities, votedCity,setVoteToUser,goverments,cityUser}) {
   const classes = useStyles();
   const [modal, setModal] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [indexGover, setIndexGover] = React.useState(null);
 
-
-
   const handleVote = (index) => {
 
-
-    setVoteToUser(index,"Kiev");
+    setVoteToUser(index,"new york");
     handleClose();
 
   }
@@ -604,7 +601,7 @@ export default function CityKiev({cities, votedCity,setVoteToUser,goverments,cit
   const handleClose = () => {
     setOpen(false);
   };
-console.log(cityUser[0].city.toLowerCase(), typeof(cityUser[0].city))
+console.log(cities)
 
 
   return (
@@ -628,7 +625,7 @@ console.log(cityUser[0].city.toLowerCase(), typeof(cityUser[0].city))
       </Modal>
     </div>
     {modal ? <ModalWindow /> : null}
-    <h1 style={{textAlign:"center",fontSize:"48px", }}>Kiev</h1>
+    <h1 style={{textAlign:"center",fontSize:"48px", }}>New York</h1>
     <Grid container spacing={1}>
     <Grid container item xs={12} spacing={3}>
         {
@@ -660,7 +657,7 @@ console.log(cityUser[0].city.toLowerCase(), typeof(cityUser[0].city))
             </WrapperContent>
          </div>
          <WrapperBtn>
-         {votedCity[0] && (cityUser[0] && cityUser[0].city.toLowerCase() === "kiev") && votedCity[0].votedCity  === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
+         {votedCity[0] && (cityUser[0] && cityUser[0].city.toLowerCase() === "new york") && votedCity[0].votedCity === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
          </WrapperBtn>
          </div>
      </div>

@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
 
-export const setVoteToUser = (index) => dispatch => {
+export const setVoteToUser = (index, city) => dispatch => {
 
   firebase.auth().onAuthStateChanged(function(user) {
      
@@ -25,16 +25,16 @@ export const setVoteToUser = (index) => dispatch => {
 
   console.log(index);
 
-  setVoteToCandidate(index);
+  setVoteToCandidate(index, city);
 
 }
 
-const setVoteToCandidate = (index)  => {
+const setVoteToCandidate = (index, city)  => {
 
   let dataGoverment;
   let valueVotes;
 
- firebase.database().ref(`CityCandidates/Kiev/${index}`).on('value',(snap) => {
+ firebase.database().ref(`MayorCandidates/${city}/${index}`).on('value',(snap) => {
   dataGoverment = snap.val();
   let vote = snap.val().votes;
     decodeDiscussionId(vote);
@@ -44,7 +44,7 @@ const setVoteToCandidate = (index)  => {
  
   })
 
-  firebase.database().ref(`CityCandidates/Kiev/${index}`).set({
+  firebase.database().ref(`MayorCandidates/${city}/${index}`).set({
     ...dataGoverment,
     votes:valueVotes
   })

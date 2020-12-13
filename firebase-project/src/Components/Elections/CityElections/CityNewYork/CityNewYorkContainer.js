@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import { connect } from 'react-redux';
 import {compose} from 'redux';
-import CityKiev from './CityKiev';
+import CityNewYork from './CityNewYork';
 import firebase from 'firebase';
 
 import {getCitiesAction} from '../../../../redux/reducers/cityCandidatesReducer';
 import {setVoteToUser} from '../../../../redux/actions/cityVoteActions';
 
-const CityKievContainer = (props) => {
+const CityNewYorkContainer = (props) => {
 
   useEffect(()=>{
 
@@ -16,19 +16,18 @@ const CityKievContainer = (props) => {
   },[]);
 
   return(
-    <CityKiev {...props}/>
+    <CityNewYork {...props}/>
   );
 }
 
 const mapStateToProps = (state) => {
   return{
-    cities:state.cities.cities.Kiev,
+    cities:state.cities.cities["new york"],
     votedCity:state.auth.userData,
     cityUser:state.auth.userData
-   
   }
 }
 
 export default compose(
   connect(mapStateToProps,{getCitiesAction,setVoteToUser}),
-  )(CityKievContainer);
+  )(CityNewYorkContainer);

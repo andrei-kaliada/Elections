@@ -4,8 +4,8 @@ import {compose} from 'redux';
 import CityKiev from './CityKiev';
 import firebase from 'firebase';
 
-import {getCitiesAction} from '../../../../redux/reducers/cityCandidatesReducer';
-import {setVoteToUser} from '../../../../redux/actions/cityVoteActions';
+import {getCitiesAction} from '../../../../redux/reducers/mayorCandidatesReducer';
+import {setVoteToUser} from '../../../../redux/actions/mayorVoteActions';
 
 const CityKievContainer = (props) => {
 
