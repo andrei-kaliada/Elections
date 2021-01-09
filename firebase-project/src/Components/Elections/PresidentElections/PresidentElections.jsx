@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import unnamedImage from '../../../../assets/images/unnamed.png';
+import unnamedImage from '../../../assets/images/unnamed.png';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -14,7 +14,7 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs';
-import voteImg from '../../../../assets/icons/vote.png'
+import voteImg from '../../../assets/icons/vote.png'
 
 const WrapperContainer = styled.div`
 display:flex;
@@ -576,17 +576,19 @@ const ModalWindow = ({name, handleClose, indexGover,handleVote}) => {
 };
 
 
-export default function CityNewYork({cities, votedCity,setVoteToUser,goverments,cityUser}) {
+export default function PresidentElections({cities, votedCity,setVoteToUser,goverments,cityUser,candidates}) {
   const classes = useStyles();
   const [modal, setModal] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [indexGover, setIndexGover] = React.useState(null);
 
+  console.log(candidates);
+
   const handleVote = (index) => {
 
 
-    setVoteToUser(index,"new york");
+    setVoteToUser(index);
     handleClose();
 
   }
@@ -594,8 +596,8 @@ export default function CityNewYork({cities, votedCity,setVoteToUser,goverments,
   const handleOpen = (index) => {
     setOpen(true);
     // ModalWindow(name);
-    console.log(cities[index].name);
-    setName(cities[index].name);
+    console.log(candidates[index].name);
+    setName(candidates[index].name);
     setIndexGover(index);
   };
 
@@ -626,12 +628,12 @@ console.log(cities)
       </Modal>
     </div>
     {modal ? <ModalWindow /> : null}
-    <h1 style={{textAlign:"center",fontSize:"48px", }}>New York</h1>
+    <h1 style={{textAlign:"center",fontSize:"48px", }}>Warsaw</h1>
     <Grid container spacing={1}>
     <Grid container item xs={12} spacing={3}>
         {
           
-      cities && cities.map((element, index)=>(
+          candidates && candidates.map((element, index)=>(
         
         <React.Fragment>
         <Grid item xs={4}>
@@ -658,7 +660,7 @@ console.log(cities)
             </WrapperContent>
          </div>
          <WrapperBtn>
-         {votedCity[0] && (cityUser[0] && cityUser[0].city.toLowerCase() === "new york") && votedCity[0].votedMayor === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
+         {cityUser[0]  && cityUser[0].votedPresident === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
          </WrapperBtn>
          </div>
      </div>

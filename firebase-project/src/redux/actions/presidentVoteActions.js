@@ -13,7 +13,7 @@ export const setVoteToUser = (index, city) => dispatch => {
         if(dataUsers[el].email.toLowerCase() === userEmail){
           firebase.database().ref('Users/' + el).set({
             ...dataUsers[el],
-            votedMayor:"yes"
+            votedPresident:"yes"
 
           });
         }
@@ -34,7 +34,7 @@ const setVoteToCandidate = (index, city)  => {
   let dataGoverment;
   let valueVotes;
 
- firebase.database().ref(`MayorCandidates/${city}/${index}`).on('value',(snap) => {
+ firebase.database().ref(`PresidentCandidates/${index}`).on('value',(snap) => {
   dataGoverment = snap.val();
   let vote = snap.val().votes;
     decodeDiscussionId(vote);
@@ -44,7 +44,7 @@ const setVoteToCandidate = (index, city)  => {
  
   })
 
-  firebase.database().ref(`MayorCandidates/${city}/${index}`).set({
+  firebase.database().ref(`PresidentCandidates/${index}`).set({
     ...dataGoverment,
     votes:valueVotes
   })

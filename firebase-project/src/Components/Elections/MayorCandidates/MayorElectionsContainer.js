@@ -18,7 +18,7 @@ const MayorElectionsContainer = (props) => {
 
 const mapStateToProps = (state) => {
   return{
-    goverments:state.cities.cities
+    goverments:state.mayor.cities
   }
 }
 

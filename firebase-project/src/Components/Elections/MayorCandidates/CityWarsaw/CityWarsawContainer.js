@@ -22,7 +22,7 @@ const CityWarsawContainer = (props) => {
 
 const mapStateToProps = (state) => {
   return{
-    cities:state.cities.cities.Warsaw,
+    cities:state.mayor.cities.Warsaw,
     votedCity:state.auth.userData,
     cityUser:state.auth.userData
   }

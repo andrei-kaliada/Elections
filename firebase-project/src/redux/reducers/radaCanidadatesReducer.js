@@ -4,16 +4,16 @@ import firebase from 'firebase';
 const ADD_CITIES = "ADD_SITIES";
 
 const initialState = {
-  cities:{},
+  radaCandidates:[],
 };
 
-export default function mayorCandidatesReducer(state = initialState, {type,payload}) {
+export default function radaCanidadatesReducer(state = initialState, {type,payload}) {
     
     switch(type){
         case ADD_CITIES:
             return{
                 ...state,
-                cities:payload
+                radaCandidates:payload
             }
 
         default:return state;
@@ -21,7 +21,7 @@ export default function mayorCandidatesReducer(state = initialState, {type,paylo
 }
 
 
-export const addMayorAction = (cities) => {
+export const addRadaAction = (cities) => {
   console.log(cities);
   return{
     type:ADD_CITIES,
@@ -29,9 +29,9 @@ export const addMayorAction = (cities) => {
   }
 }
 
-export const getCitiesAction = () => (dispatch) => {
-  firebase.database().ref('/MayorCandidates').on('value', (snap) => {
+export const getRadaAction = () => (dispatch) => {
+  firebase.database().ref('/VerkhovnaRadaParties').on('value', (snap) => {
     console.log(snap.val());
-    dispatch(addMayorAction(snap.val()));
+    dispatch(addRadaAction(snap.val()));
   })
 }

@@ -10,6 +10,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import CallIcon from '@material-ui/icons/Call';
 import EmailIcon from '@material-ui/icons/Email';
 import SettingsIcon from '@material-ui/icons/Settings';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import firebase from "firebase";
 
 const Navigation = styled.div`
@@ -81,6 +82,13 @@ export default function Nav({handleSignOutUser}) {
             <p>Election</p>
           </li>
           </NavLink>
+          <NavLink to="/results">
+            
+            <li className="navigation__title">
+            <AssignmentTurnedInIcon />
+              <p>Results</p>
+            </li>
+            </NavLink>
           
         </ul>
       </div>

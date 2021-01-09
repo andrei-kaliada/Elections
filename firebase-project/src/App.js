@@ -32,7 +32,9 @@ import MayorKievContainer from './Components/Elections/MayorCandidates/CityKiev/
 import MayorWarsawContainer from './Components/Elections/MayorCandidates/CityWarsaw/CityWarsawContainer';
 import MayorNewYorkContainer from './Components/Elections/MayorCandidates/CityNewYork/CityNewYorkContainer';
 
-
+import PresidentElectionsContainer from './Components/Elections/PresidentElections/PresidentElectionsContainer';
+import VerkhovnaRadaElectionsContainer from './Components/Elections/VerkhovnaRadaElections/VerkhovnaRadaElectionsContainer';
+import ResultContainer from './Components/Elections/Results/ResultsContainer';
 
 import EmailUs from './Components/Email/EmailUs';
 import Feedback from './Components/Feedback/Feedback';
@@ -167,34 +169,31 @@ function App(props) {
       >
         <div className={classNames(classes.drawerHeader,"test")} />
         <Switch>
-          <Route exact path='/' render={() => (<MainPage />)}
-          />
-          <Route  path='/election' render={() => (<ElectionsContainer />)}/>
+          <Route exact path='/' render={() => (<MainPage />)}/>
+          <Route exact  path='/election' render={() => (<ElectionsContainer />)}/>
 
 
-          <Route  path='/cityElections' render={() => (<CityElectionsContainer />)}
-          /> 
-          <Route  path='/cityKiev' render={() => (<CityKievContainer />)}
-          />
-          <Route  path='/cityWarsaw' render={() => (<CityWarsawContainer />)}
-          />
-          <Route  path='/cityNewYork' render={() => (<CityNewYorkContainer />)}
-          />
+          <Route exact  path='/cityElections' render={() => (<CityElectionsContainer />)}/> 
+          <Route exact path='/cityKiev' render={() => (<CityKievContainer />)}/>
+          <Route exact path='/cityWarsaw' render={() => (<CityWarsawContainer />)}/>
+          <Route exact path='/cityNewYork' render={() => (<CityNewYorkContainer />)}/>
 
 
-          <Route  path='/mayorElection' render={() => (<MayorElectionsContainer />)}
-          />
-          <Route  path='/mayorCityKiev' render={() => (<MayorKievContainer />)}
-          />
-          <Route  path='/mayorCityWarsaw' render={() => (<MayorWarsawContainer />)}
-          />
-          <Route  path='/mayorCityNewYork' render={() => (<MayorNewYorkContainer />)}
-          />
+          <Route exact path='/mayorElection' render={() => (<MayorElectionsContainer />)}/>
+          <Route exact path='/mayorCityKiev' render={() => (<MayorKievContainer />)}/>
+          <Route exact path='/mayorCityWarsaw' render={() => (<MayorWarsawContainer />)}/>
+          <Route exact path='/mayorCityNewYork' render={() => (<MayorNewYorkContainer />)}/>
+
+          <Route exact path='/presidentElection' render={() => (<PresidentElectionsContainer />)}/>
 
 
+          <Route exact path='/verkhovnaRadaElection' render={() => (<VerkhovnaRadaElectionsContainer />)}/>
 
-          <Route  path='/profile' render={() => (<ProfileContainer />)}
-          />
+
+          <Route exact path='/results' render={() => (<ResultContainer />)}/>
+
+
+          <Route  path='/profile' render={() => (<ProfileContainer />)}/>
           <Route path='/feedback' render={() => (<Feedback />)} />
           <Route path='/emailUs' render={() => (<EmailUs />)} />
           <Route path='/form' render={() => <FormTest />} />

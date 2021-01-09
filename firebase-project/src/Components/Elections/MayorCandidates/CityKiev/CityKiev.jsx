@@ -660,7 +660,7 @@ export default function CityKiev({cities, votedCity,setVoteToUser,goverments,cit
             </WrapperContent>
          </div>
          <WrapperBtn>
-         {votedCity[0] && (cityUser[0] && cityUser[0].city.toLowerCase() === "kiev") && votedCity[0].votedCity  === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
+         {votedCity[0] && (cityUser[0] && cityUser[0].city.toLowerCase() === "kiev") && votedCity[0].votedMayor  === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
          </WrapperBtn>
          </div>
      </div>

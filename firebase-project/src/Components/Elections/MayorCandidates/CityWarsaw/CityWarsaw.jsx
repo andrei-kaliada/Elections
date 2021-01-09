@@ -658,7 +658,7 @@ console.log(cities)
             </WrapperContent>
          </div>
          <WrapperBtn>
-         {votedCity[0] && (cityUser[0] && cityUser[0].city.toLowerCase() === "warsaw") && votedCity[0].votedCity === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
+         {cityUser[0] && (cityUser[0] && cityUser[0].city.toLowerCase() === "warsaw") && cityUser[0].votedMayor === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
          </WrapperBtn>
          </div>
      </div>

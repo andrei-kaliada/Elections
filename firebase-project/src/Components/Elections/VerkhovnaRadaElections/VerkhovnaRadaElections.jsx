@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import unnamedImage from '../../../../assets/images/unnamed.png';
+import unnamedImage from '../../../assets/images/unnamed.png';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -14,7 +14,7 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs';
-import voteImg from '../../../../assets/icons/vote.png'
+import voteImg from '../../../assets/icons/vote.png'
 
 const WrapperContainer = styled.div`
 display:flex;
@@ -555,7 +555,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   );
 });
 
-const ModalWindow = ({name, handleClose, indexGover,handleVote}) => {
+const ModalWindow = ({name, handleClose, indexGover,handleVote, party}) => {
     return(
       <WrapperModal>
         <HeaderModal>
@@ -565,7 +565,7 @@ const ModalWindow = ({name, handleClose, indexGover,handleVote}) => {
           <img src={voteImg} alt="icon"/>
         </HeaderModal>
         <MainContentModal>
-    Are you sure want to vote for {name}?
+    Are you sure want to vote for {party}?
         </MainContentModal>
         <ButtonsModal>
           <button onClick={handleClose} className="btnBack">Back</button>
@@ -576,17 +576,20 @@ const ModalWindow = ({name, handleClose, indexGover,handleVote}) => {
 };
 
 
-export default function CityNewYork({cities, votedCity,setVoteToUser,goverments,cityUser}) {
+export default function VerkhovnaRadaElections({cities, votedCity,setVoteToUser,goverments,cityUser,rada}) {
   const classes = useStyles();
   const [modal, setModal] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [indexGover, setIndexGover] = React.useState(null);
+  const [party, setParty] = React.useState(null);
+
+  console.log(rada);
 
   const handleVote = (index) => {
 
 
-    setVoteToUser(index,"new york");
+    setVoteToUser(index);
     handleClose();
 
   }
@@ -594,8 +597,9 @@ export default function CityNewYork({cities, votedCity,setVoteToUser,goverments,
   const handleOpen = (index) => {
     setOpen(true);
     // ModalWindow(name);
-    console.log(cities[index].name);
-    setName(cities[index].name);
+    console.log(rada[index].name);
+    setName(rada[index].name);
+    setParty(rada[index].party);
     setIndexGover(index);
   };
 
@@ -621,17 +625,17 @@ console.log(cities)
         }}
       >
         <Fade in={open}>
-          <ModalWindow handleVote={handleVote} indexGover={indexGover} handleClose={handleClose} name={name} />
+          <ModalWindow handleVote={handleVote} indexGover={indexGover} handleClose={handleClose} name={name} party={party}/>
         </Fade>
       </Modal>
     </div>
     {modal ? <ModalWindow /> : null}
-    <h1 style={{textAlign:"center",fontSize:"48px", }}>New York</h1>
+    <h1 style={{textAlign:"center",fontSize:"48px", }}>Warsaw</h1>
     <Grid container spacing={1}>
     <Grid container item xs={12} spacing={3}>
         {
           
-      cities && cities.map((element, index)=>(
+          rada && rada.map((element, index)=>(
         
         <React.Fragment>
         <Grid item xs={4}>
@@ -642,15 +646,13 @@ console.log(cities)
        <div>
          <img class="card-avatar" src={element.purl || unnamedImage} alt="avatar" />
        </div>
-       <h1 class="card-fullname">{`${element.name}`}</h1>
-       <h2 class="card-jobtitle">{element.party}</h2>
+       <h1 class="card-fullname">{`${element.party}`}</h1>
+
      </div>
      <div class="card-main">
      <div class="card-section is-active" id="about">
          <div class="card-content">
-            <WrapperAge>
-              Age:{element.age}
-            </WrapperAge>
+
             <WrapperContent>
               <p>
                 {element.info}
@@ -658,7 +660,7 @@ console.log(cities)
             </WrapperContent>
          </div>
          <WrapperBtn>
-         {votedCity[0] && (cityUser[0] && cityUser[0].city.toLowerCase() === "new york") && votedCity[0].votedMayor === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
+         {cityUser[0]  && cityUser[0].votedVer === "no" ? <Button onClick={()=>handleOpen(index)} variant="contained">Vote</Button> : null}
          </WrapperBtn>
          </div>
      </div>
